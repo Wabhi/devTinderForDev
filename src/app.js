@@ -2,9 +2,22 @@ const express = require('express');
 const app = express();
 
 //request and response handler for different routes 
-app.use('/user',(req, res)=>{
-    res.send('Hello World from user route');
+
+// app.use('/',(req, res)=>{
+//     res.send('Hello World from root route');
+// })
+
+app.get('/user',(req, res)=>{
+    res.send({name:'Ankur', age: 25, city: 'Delhi' });
 })
+
+app.post('/user',(req, res)=>{
+    res.send({message: 'User created successfully'});
+})
+
+app.delete('/user',(req, res)=>{
+    res.send({message: 'User deleted successfully'});
+})  
 
 app.use('/test',(req, res)=>{
     res.send('Hello World from test route');
