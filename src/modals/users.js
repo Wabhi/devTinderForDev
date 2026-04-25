@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const userSchema = mongoose.Schema(
   {
@@ -146,17 +147,21 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-// ✅ Step 1 — comparePassword method
+userSchema.methods.getJWTToken = async function () {
+  const token = await jwt.sign({ _id: this._id }, "your_jwt_secret_key", {
+    expiresIn: "7d",
+  });
+  return token;
+}
+
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// ✅ Step 2 — pre-save hook
 userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 10);
   this.confirmPassword = undefined;
 });
 
-// ✅ Step 3 — model always last
 const User = mongoose.model("User", userSchema);
 module.exports = User;

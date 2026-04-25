@@ -121,3 +121,41 @@ app.get("/", (err, req, res, next) => {
     res.status(500).send("something went wrong");
   }
 });
+
+
+
+// feed user api
+app.get("/feed", async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (err) {
+    res.status(400).send("Something went wrong!!!!!!!!!!");
+  }
+});
+
+// delete a user
+app.delete("/user", async (req, res) => {
+  const userId = req.body.userId;
+  try {
+    await User.findByIdAndDelete({ _id: userId });
+    res.send("User deleted successfully !!!!!!!!!!");
+  } catch (err) {
+    res.status(400).send("Something went wrong!!!!!!!!!!");
+  }
+});
+
+// update user data
+app.patch("/user", async (req, res) => {
+  const userId = req.body.userId;
+  const data = req.body;
+  try {
+    await User.findByIdAndUpdate({ _id: userId }, data, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+    res.send("User data is successfully updated!!!!!!");
+  } catch (err) {
+    res.status(400).send("Something went wrong!!!!!!!!!!");
+  }
+});
