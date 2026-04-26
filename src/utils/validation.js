@@ -193,4 +193,19 @@ const validateUserDataOnLogin = (data) => {
   };
 };
 
-module.exports = {validateUserDataOnSignUp, validateUserDataOnLogin};
+const validateUserDataOnProfileEdit = (req) => {
+  const allowedFields = [
+     "firstName",
+    "lastName",
+    "city",
+    "hobbies",  
+    "photoUrl",
+    "skills",
+    "about",
+    "phoneNumber"]
+
+const isEditDataValid = Object.keys(req.body).every((key) => allowedFields.includes(key));
+return isEditDataValid;
+}
+
+module.exports = {validateUserDataOnSignUp, validateUserDataOnLogin, validateUserDataOnProfileEdit};

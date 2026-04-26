@@ -5,7 +5,7 @@ const app = express();
 const {
   validateUserDataOnSignUp,
   validateUserDataOnLogin,
-} = require("../src/utils/validation"); 
+} = require("../src/utils/validation");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
@@ -15,13 +15,14 @@ app.use(express.json());
 app.use(cookieParser());
 
 const authRouter = require("./routes/authRoute");
-const profileRouter = require("./routes/profileRoute"); 
+const profileRouter = require("./routes/profileRoute");
 const requestsRouter = require("./routes/requestsRoute");
+const userRoute = require("./routes/userRoute");
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
-app.use("/", requestsRouter);    
-
+app.use("/", requestsRouter);
+app.use("/", userRoute); 
 
 connectToDb()
   .then(() => {

@@ -1,6 +1,7 @@
 const express = require("express");
 const { validateUserDataOnSignUp } = require("../utils/validation");
 const User = require("../modals/users");
+const { userJwTokenMiddleware } = require("../middlewares/Auth");
 const authRouter = express.Router();
 
 // signup user api
@@ -99,6 +100,22 @@ authRouter.post("/login", async (req, res) => {
   }
 });
 
+// logout user api
+authRouter.post("/logout", userJwTokenMiddleware, async (req, res) => {  
+  try{
+    res.cookie("token", null, { expires: new Date(0) }); // Clear the token cookie
+    res.status(200).json({
+      success: true,
+      message: "Logout successful",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: err.message,
+    });
+  }
+});
 
 module.exports = authRouter;
 
