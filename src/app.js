@@ -10,15 +10,20 @@ const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const { userJwTokenMiddleware } = require("./middlewares/Auth");
-
-app.use(express.json());
-app.use(cookieParser());
-
+const cors = require("cors");
 const authRouter = require("./routes/authRoute");
 const profileRouter = require("./routes/profileRoute");
 const requestsRouter = require("./routes/requestsRoute");
 const userRoute = require("./routes/userRoute");
 
+
+app.use(express.json());
+app.use(cookieParser());
+
+app.use(cors({
+  origin: "http://localhost:5173", // ✅ allow requests from frontend
+  credentials: true, // ✅ allow cookies to be sent
+}));
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestsRouter);
