@@ -38,4 +38,5 @@ connectToDb()
   })
   .catch((error) => {
     console.log("Database is not successfully connected !!!!!!!!");
+    console.log("Exact error:", error.message); // ✅ add this line
   });
